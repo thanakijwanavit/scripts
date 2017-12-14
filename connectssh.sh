@@ -13,7 +13,7 @@ port=23456
 ip='18.217.21.66'
 while getopts ':hs:p:i:c' option; do
   case "$option" in
-    c) ssh -R $port:localhost:22 -i "nicwanavit.pem" ec2-user@$ip  
+    c) tmux new-session -s amazon -d "cd /home/nic/scripts/ ;ssh -R $port:localhost:22 -i 'nicwanavit.pem' ec2-user@$ip ;read"
        ;;
     h) echo "$usage"
        exit
@@ -40,6 +40,6 @@ shift $((OPTIND - 1))
 
 
 
-echo tmux new-session -s amazon -d "cd /home/nic/scripts/ ;ssh -R $port:localhost:22 -i 'nicwanavit.pem' ec2-user@$ip ;read"
+tmux new-session -s amazon -d "cd /home/nic/scripts/ ;ssh -R $port:localhost:22 -i 'nicwanavit.pem' ec2-user@$ip ;read"
 
-echo $port $ip
+
