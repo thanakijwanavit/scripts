@@ -40,4 +40,4 @@ shift $((OPTIND - 1))
 
 
 
-tmux new-session -s amazon -d 'ssh -R $port:localhost:22 -i "nicwanavit.pem" ec2-user@$ip'
+tmux new-session -s amazon -d 'ssh -R $port:localhost:22 -i "nicwanavit.pem" ec2-user@$ip; return'
