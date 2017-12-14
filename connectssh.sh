@@ -41,3 +41,5 @@ shift $((OPTIND - 1))
 
 
 echo tmux new-session -s amazon -d 'cd /home/nic/scripts/ ;ssh -R $port:localhost:22 -i "nicwanavit.pem" ec2-user@$ip ;read'
+
+echo $port $ip
