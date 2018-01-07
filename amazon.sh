@@ -1,2 +1,2 @@
 #!/bin/bash
-ssh -i "/home/nic/scripts/nicwanavit.pem" ec2-user@ec2-18-217-21-66.us-east-2.compute.amazonaws.com
+ssh -i "/home/$USER/scripts/amazonfree.pem" ubuntu@ec2-54-70-87-233.us-west-2.compute.amazonaws.com
