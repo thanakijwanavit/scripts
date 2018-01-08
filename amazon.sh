@@ -1,6 +1,6 @@
 #!/bin/bash
 
-keyfile=$(locate amazonfree.pem)
+keyfile=$(find $HOME/scripts -name amazonfree.pem)
 
 echo $keyfile is used as the  keyfile
 
