@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #<<<<<<< HEAD
-package='locate'
+package='find'
 #=======
 keyfile=$(find $HOME/scripts -name amazonfree.pem)
 #>>>>>>> f832b760c41dcc259e030e686eb0a07f5ce42fde
@@ -23,6 +23,7 @@ if [ $package == 'find' ]; then
 	echo find is used
 fi	
 echo $keyfile is used as the keyfile
+chmod 400 $keyfile
 
 ssh -i $keyfile ubuntu@ec2-54-70-87-233.us-west-2.compute.amazonaws.com
 #/home/$USER/scripts/amazonfree.pem
