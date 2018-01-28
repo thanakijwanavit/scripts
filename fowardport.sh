@@ -9,6 +9,7 @@ where:
     -c connect
     -f port from (default:80)
 "
+number=$((RANDOM % 10))
 from=80
 seed=42
 port=23456
@@ -44,6 +45,6 @@ shift $((OPTIND - 1))
 
 
 
-tmux new-session -s amazon -d "cd /home/nic/scripts/ ;ssh -R $port:localhost:$from -i 'amazonfree.pem' nic@$ip ;read"
+tmux new-session -s amazon$number -d "cd /home/nic/scripts/ ;ssh -R $port:localhost:$from -i 'amazonfree.pem' ubuntu@$ip ;read"
 
 
