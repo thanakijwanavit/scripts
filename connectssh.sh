@@ -10,7 +10,7 @@ where:
 "
 seed=42
 port=23456
-ip='172.31.32.178'
+ip='ec2-54-70-87-233.us-west-2.compute.amazonaws.com'
 while getopts ':hs:p:i:c' option; do
   case "$option" in
     c) tmux new-session -s amazon -d "cd /home/nic/scripts/ ;ssh -R $port:localhost:22 -i '/home/nic/scripts/amazonfree.pem' nic@$ip ;read"
