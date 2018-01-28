@@ -5,15 +5,15 @@ where:
     -h  show this help text
     -s  set the seed value (default: 42)
     -p set port (default 23456)
-    -i amazon ip (default: 18.217.21.66)
+    -i amazon ip (default: 172.31.32.178)
     -c connect
 "
 seed=42
 port=23456
-ip='18.217.21.66'
+ip='172.31.32.178'
 while getopts ':hs:p:i:c' option; do
   case "$option" in
-    c) tmux new-session -s amazon -d "cd /home/nic/scripts/ ;ssh -R $port:localhost:22 -i 'nicwanavit.pem' ec2-user@$ip ;read"
+    c) tmux new-session -s amazon -d "cd /home/nic/scripts/ ;ssh -R $port:localhost:22 -i 'nicwanavit.pem' nic@$ip ;read"
        ;;
     h) echo "$usage"
        exit
@@ -40,6 +40,6 @@ shift $((OPTIND - 1))
 
 
 
-tmux new-session -s amazon -d "cd /home/nic/scripts/ ;ssh -R $port:localhost:22 -i 'nicwanavit.pem' ec2-user@$ip ;read"
+tmux new-session -s amazon -d "cd /home/nic/scripts/ ;ssh -R $port:localhost:22 -i 'nicwanavit.pem' nic@$ip ;read"
 
 
