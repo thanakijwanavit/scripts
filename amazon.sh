@@ -1,10 +1,10 @@
 #!/bin/bash
 
-<<<<<<< HEAD
+#<<<<<<< HEAD
 package='locate'
-=======
+#=======
 keyfile=$(find $HOME/scripts -name amazonfree.pem)
->>>>>>> f832b760c41dcc259e030e686eb0a07f5ce42fde
+#>>>>>>> f832b760c41dcc259e030e686eb0a07f5ce42fde
 
 PKG_OK=$(dpkg-query -W --showformat='${Status}\n' $package|grep 'install ok installed')
 echo Checking for locate: $PKG_OK
