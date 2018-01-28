@@ -1,4 +1,13 @@
 #!/bin/bash
+
+package=autossh
+PKG_OK=$(dpkg-query -W --showformat='${Status}\n' $package|grep 'install ok install')
+echo Checking for locate: $PKG_OK
+if [ "" == "$PKG_OK" ]; then
+        echo 'installing' $package
+        sudo apt-get --force-yes --yes install $package
+fi
+
 usage="$(basename "$0") [-h] [-s n] -- program to calculate the answer to life, the universe and everything
 
 where:
@@ -9,11 +18,11 @@ where:
     -c connect
 "
 seed=42
-port=23456
+port=10000
 ip='ec2-54-70-87-233.us-west-2.compute.amazonaws.com'
 while getopts ':hs:p:i:c' option; do
   case "$option" in
-    c) tmux new-session -s amazon -d "cd /home/nic/scripts/ ;ssh -R $port:localhost:22 -i '/home/nic/scripts/amazonfree.pem' nic@$ip ;read"
+    c) tmux new-session -s amazon -d "cd /home/nic/scripts/ ;autossh -R $port:localhost:22 -i '/home/nic/scripts/amazonfree.pem' ubuntu@$ip ;read"
        ;;
     h) echo "$usage"
        exit
@@ -40,6 +49,6 @@ shift $((OPTIND - 1))
 
 
 
-tmux new-session -s amazon -d "cd /home/nic/scripts/ ;ssh -R $port:localhost:22 -i 'amazonfree.pem' nic@$ip ;read"
+tmux new-session -s amazon -d "cd /home/nic/scripts/ ;autossh -R $port:localhost:22 -i 'amazonfree.pem' ubuntu@$ip ;read"
 
 
