@@ -7,4 +7,3 @@ sudo ./gitconfig.sh
 sudo apt-get install tmux
 sudo ./putallincommandlist.sh
 
-sudo chmox 400 nicwanavit.pem
