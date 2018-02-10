@@ -45,6 +45,6 @@ shift $((OPTIND - 1))
 
 
 
-tmux new-session -s amazon$number -d "cd /home/nic/scripts/ ;ssh -R $port:localhost:$from -i 'amazonfree.pem' ubuntu@$ip ;read"
+tmux new-session -s amazon$number -d "cd /home/nic/scripts/ ;autossh -R $port:localhost:$from -i 'amazonfree.pem' ubuntu@$ip ;read"
 
 
