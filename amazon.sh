@@ -10,7 +10,13 @@ PKG_OK=$(dpkg-query -W --showformat='${Status}\n' $package|grep 'install ok inst
 echo Checking for locate: $PKG_OK
 if [ "" == "$PKG_OK" ]; then
 	echo 'installing' $package
-	sudo apt-get --force-yes --yes install $package
+	case $OSTYPE in 
+	linux*) echo I am a linux
+		sudo apt-get --force-yes --yes install $package 
+		;; 
+	*) 	echo "I am not a linux, please install $package manually"
+   		;;
+	esac
 fi
 
 if [ $package == 'locate' ]; then
