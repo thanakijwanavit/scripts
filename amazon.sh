@@ -1,5 +1,5 @@
 #!/bin/bash
-
+'''
 #<<<<<<< HEAD
 package='find'
 #=======
@@ -31,5 +31,14 @@ fi
 echo $keyfile is used as the keyfile
 chmod 400 $keyfile
 
+
 ssh -i $keyfile ubuntu@ec2-54-70-87-233.us-west-2.compute.amazonaws.com
+
+'''
+ssh -i amazonfree.pem ubuntu@ec2-54-70-87-233.us-west-2.compute.amazonaws.com
+
+
+
 #/home/$USER/scripts/amazonfree.pem
+
+

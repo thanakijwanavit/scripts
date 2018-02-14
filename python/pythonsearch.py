@@ -1,0 +1,25 @@
+#!/usr/bin/env python3
+import re
+
+
+print ('hello world')
+print('your name is')
+name = input()
+print('hello %s, nice to meet you'%name)
+
+print('find phone number')
+phonenumreg= re.compile(r'(\d\d\d)-(\d\d\d-\d\d\d)')
+mo = phonenumreg.search('my number is 324-234-234')
+print(mo.group(1))
+print(mo.group(2))
+
+
+batregex= re.compile(r'Bat (man|mobil|bat|other)')
+mo = batregex.search('hello Bat mobil is coming to town, are you ready Bat man?')
+try:
+	print('just group',mo.group())
+	print('group1',mo.group(1))
+#print('group2',mo.group(2))
+	print('just mo',mo)
+except IndexError:
+	print('no such value')
