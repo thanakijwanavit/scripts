@@ -2,7 +2,7 @@
 
 #######function text#######
 
-usage="$(basename "$0") [-h] [-s n] -- program to calculate the answer to life, the universe and everything
+usage="$(basename "$0") [-h] [-s n] -- put bash software into root command shortkey for example use './putincommandlist function shortkey' to create a shortkey of function called shortkey
 
 where:
     -h  show this help text
