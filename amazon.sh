@@ -1,4 +1,7 @@
 #!/bin/bash
+
+
+: <<'COMMENT'
 '''
 #<<<<<<< HEAD
 package='find'
@@ -35,6 +38,9 @@ chmod 400 $keyfile
 ssh -i $keyfile ubuntu@ec2-54-70-87-233.us-west-2.compute.amazonaws.com
 
 '''
+COMMENT
+
+
 ssh -i amazonfree.pem ubuntu@ec2-54-70-87-233.us-west-2.compute.amazonaws.com
 
 
