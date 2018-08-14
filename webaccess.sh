@@ -3,4 +3,12 @@
 tmux new-session -s webaccess -d "links http://hommesook.tarad.com/;read"
 
 sleep 10 && tmux kill-session -t webaccess
-# * 3 * * * /home/ubuntu/scripts/webaccess.sh
+# 1 * * * * /home/ubuntu/scripts/webaccess.sh
+
+
+
+##### how to use #####
+#install tmux, links by running
+#sudo apt-get install tmux links
+#crontab -e
+#add "1 * * * * /home/ubuntu/scripts/webaccess.sh" to crontab
