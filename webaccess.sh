@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
 
-links http://hommesook.tarad.com/
-sleep 10 && links --quit
+tmux new-session -s webaccess -d "links http://hommesook.tarad.com/;read"
+
+sleep 10 && tmux kill-session -t webaccess
