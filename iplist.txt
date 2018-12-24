@@ -1,0 +1,6 @@
+macbookpro 12345
+orangpizerofactory 23456
+raspberrypi home 1425
+headlesspi 4256
+macminihome 13425
+macminihome 192.168.87.250
