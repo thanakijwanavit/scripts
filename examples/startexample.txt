@@ -1,0 +1,6 @@
+(sleep 20
+su - ubuntu -c '''tmux new-session -s lightcontrol -d "cd /home/ubuntu/flask;/home/ubuntu/flask/startflask.sh;read"'''
+su - ubuntu -c '''tmux new-session -s portfoward4999to4999 -d "autossh -L 4999:localhost:4999 nic@localhost -p 5000 ;read"'''
+su - ubuntu -c '''tmux new-session -s miner2 -d "autossh nic@localhost -p 5000;read"'''
+su - ubuntu -c '''tmux new-session -s miner1 -d "autossh nic@localhost -p 6000;read"'''
+)
