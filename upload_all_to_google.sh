@@ -36,11 +36,11 @@ set -- "${POSITIONAL[@]}" # restore positional parameters
 
 
 for f in *; do
-if [ $f != "uploaded" ]
+if [ "$f" != "uploaded" ]
 then
   echo "file $f is uploading to $DIRECTORYID"
-  gdrive upload -r -p $DIRECTORYID $f
-  mv $f "uploaded/$f"
+  gdrive upload -r -p $DIRECTORYID "$f"
+  mv "$f" "uploaded/$f"
   echo "file $f is moved to uploaded/$f"
 fi
 done
