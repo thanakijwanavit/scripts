@@ -1,5 +1,5 @@
 #!/bin/bash
-usage="$(basename "$0") [-h] [-s n] -- program to calculate the answer to life, the universe and everything
+usage="$(basename "$0") [-h] [-s n] -- foward port to amazon server -f port from -p port to
 
 where:
     -h  show this help text
@@ -45,6 +45,6 @@ shift $((OPTIND - 1))
 
 
 
-tmux new-session -s amazon$number -d "cd /home/nic/scripts/ ;autossh -R $port:localhost:$from -i 'amazonfree.pem' ubuntu@$ip ;read"
+tmux new-session -s fowardportfrom${from}to${port} -d "cd /home/nic/scripts/ ;autossh -R *:$port:localhost:$from -i 'amazonfree.pem' ubuntu@$ip ;read"
 
 
