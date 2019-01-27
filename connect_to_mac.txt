@@ -1,0 +1,2 @@
+-i ~/.ssh/macprotouchbar -NTC -R 12345:localhost:22 ubuntu@ec2-54-70-87-233.us-west-2.compute.amazonaws.com
+# this is for connecting macbook pro to the ubuntu server on amazon
