@@ -1,4 +1,9 @@
+<<<<<<< HEAD
+=======
+macbookpro 12345
+>>>>>>> edd71032123805663bb0333cfd4d71b41c403495
 orangpizerofactory 23456
 raspberrypi home 1425
 headlesspi 4256
 macminihome 13425
+macminihome 192.168.87.250
