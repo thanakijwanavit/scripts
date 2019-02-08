@@ -1,0 +1,7 @@
+options to take
+--allow-root #allow running sudo on the notebook
+--no-browser
+password
+--port=8888
+--notebook-dir="/home/nic/jupyter"
+-y
