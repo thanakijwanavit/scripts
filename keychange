@@ -1,0 +1,9 @@
+Capslocks key
+keycode 66 (keysym 0xffe5, Caps_Lock)
+Escape key
+keycode 9 (keysym 0xff1b, Escape)
+
+
+# COMMANDS
+xmodmap -e "keycode 66 = Escape"
+

@@ -1,0 +1,16 @@
+# config in file /etc/network/interfaces
+
+auto wlan0
+iface wlan0 inet dhcp
+wpa-driver wext
+wpa-ssid HTR-MK
+wpa-ap-scan 1
+wpa-proto RSN
+wpa-pairwise CCMP
+wpa-group CCMP
+wpa-key-mgmt WPA-PSK
+wpa-psk 8304520950ae1c770909b5e83afffb76a80a9aa31383052dfd2a70485c1679ec
+
+
+
+# to restart run sudo /etc/init.d/networking restart
