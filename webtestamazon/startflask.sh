@@ -1,4 +1,2 @@
-#!/usr/bin/env bash
-
-FLASK_APP=hello.py flask run
-
+#!/bin/bash
+FLASK_APP=hello.py flask run -h localhost -p 50000

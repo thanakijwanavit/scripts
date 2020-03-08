@@ -22,10 +22,11 @@ def hello():
 	return rootpage
 
 @app.route("/light")
+def light_status():
 	return 'light is on'
 
 @app.route("/lightoff")
-def lightoff()
+def lightoff():
 	turnonlight.off()
 	return 'light is off'
 
