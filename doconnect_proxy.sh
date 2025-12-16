@@ -1,0 +1,1 @@
+ssh -i proxyuser_key -o ServerAliveInterval=60 -o ServerAliveCountMax=3 -D 1080 -f -C -q -N proxyuser@167.99.69.21
