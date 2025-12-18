@@ -56,7 +56,7 @@ ssh -i "$KEY_FILE" \
     -D $PORT \
     -C \
     -N \
-		-p 2222 \
+    -p 2222 \
     "$USER@$SERVER"
 
 echo ""
