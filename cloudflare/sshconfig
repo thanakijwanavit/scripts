@@ -1,0 +1,8 @@
+ServerAliveInterval 30
+ServerAliveCountMax 2
+TCPKeepAlive yes
+Compression yes
+Host capybaras
+  HostName ssh.capybaras.cc
+  User root
+  ProxyCommand /opt/homebrew/bin/cloudflared access ssh --hostname %h
