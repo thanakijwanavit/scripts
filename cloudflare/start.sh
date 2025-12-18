@@ -1,22 +1,26 @@
 #!/usr/bin/env bash
-set -Eeuo pipefail
+set -u  # don't use -e; we handle errors intentionally in a loop
+set -o pipefail
 
 HOST="${HOST:-capybaras}"
 PORT="${PORT:-1080}"
 BIND="${BIND:-127.0.0.1}"
 
+# Reconnect tuning
+MIN_UPTIME="${MIN_UPTIME:-3}"      # seconds: if ssh dies before this, count as "instant fail"
+BACKOFF_START="${BACKOFF_START:-1}" # seconds
+BACKOFF_MAX="${BACKOFF_MAX:-30}"    # seconds
+
 log() { printf "[capyproxy] %s\n" "$*" >&2; }
 die() { log "ERROR: $*"; exit 1; }
 
-# Return PIDs listening on PORT (LISTEN only)
 pids_on_port() {
   lsof -nP -iTCP:"${PORT}" -sTCP:LISTEN -t 2>/dev/null || true
 }
 
-kill_pids() {
+free_port_1080() {
   local pids
   pids="$(pids_on_port)"
-
   [ -z "$pids" ] && return 0
 
   log "Port ${PORT} busy, killing listeners:"
@@ -27,7 +31,7 @@ kill_pids() {
     kill -TERM "$pid" 2>/dev/null || true
   done
 
-  # Wait briefly for graceful exit
+  # Wait a bit
   for _ in 1 2 3 4 5 6 7 8 9 10; do
     sleep 0.1
     [ -z "$(pids_on_port)" ] && return 0
@@ -42,41 +46,71 @@ kill_pids() {
 }
 
 cleanup() {
-  local code=$?
-  if [ -n "${SSH_PID:-}" ] && kill -0 "$SSH_PID" 2>/dev/null; then
-    log "Stopping SSH (PID $SSH_PID)"
-    kill -TERM "$SSH_PID" 2>/dev/null || true
-    wait "$SSH_PID" 2>/dev/null || true
+  log "Stopping (Ctrl/Cmd+C)"
+  # If an ssh child exists, terminate it
+  if [ -n "${SSH_PID:-}" ] && kill -0 "${SSH_PID}" 2>/dev/null; then
+    kill -TERM "${SSH_PID}" 2>/dev/null || true
+    wait "${SSH_PID}" 2>/dev/null || true
   fi
-  exit "$code"
+  exit 0
 }
 
 trap cleanup INT TERM
-trap 'die "Command failed at line $LINENO"' ERR
 
-# Sanity checks
 command -v ssh >/dev/null || die "ssh not found"
 command -v lsof >/dev/null || die "lsof not found"
 
-# Free the port
-kill_pids
+free_port_1080
 
-log "Starting SOCKS5 proxy on ${BIND}:${PORT} via '${HOST}'"
-log "Press Cmd+C to stop"
+log "SOCKS5 will listen on ${BIND}:${PORT}"
+log "Egress via SSH host '${HOST}' (over Cloudflare via your ~/.ssh/config ProxyCommand)"
 log "Test: curl --proxy socks5h://${BIND}:${PORT} https://ifconfig.me"
+log "Press Cmd+C to stop."
 
-ssh -N -D "${BIND}:${PORT}" \
-  -o ExitOnForwardFailure=yes \
-  -o ServerAliveInterval=30 \
-  -o ServerAliveCountMax=3 \
-  -o TCPKeepAlive=yes \
-  "${HOST}" &
-SSH_PID=$!
+backoff="$BACKOFF_START"
+attempt=0
 
-sleep 0.2
-if ! kill -0 "$SSH_PID" 2>/dev/null; then
-  wait "$SSH_PID" || true
-  die "SSH failed to start (check Cloudflare Access + ssh capybaras)"
-fi
+while :; do
+  attempt=$((attempt + 1))
+  start_ts="$(date +%s)"
 
-wait "$SSH_PID"
+  log "Connecting (attempt ${attempt})..."
+  ssh -N -D "${BIND}:${PORT}" \
+    -o ExitOnForwardFailure=yes \
+    -o ServerAliveInterval=30 \
+    -o ServerAliveCountMax=3 \
+    -o TCPKeepAlive=yes \
+    -o ConnectTimeout=10 \
+    "${HOST}" &
+  SSH_PID=$!
+
+  # If it dies immediately, catch it before waiting forever
+  sleep 0.3
+  if ! kill -0 "${SSH_PID}" 2>/dev/null; then
+    wait "${SSH_PID}" 2>/dev/null
+    rc=$?
+    log "SSH exited immediately (rc=${rc}). Likely Cloudflare Access/session/network issue."
+  else
+    # Wait until it drops
+    wait "${SSH_PID}"
+    rc=$?
+    log "SSH disconnected (rc=${rc})."
+  fi
+
+  end_ts="$(date +%s)"
+  uptime=$((end_ts - start_ts))
+
+  # Backoff logic:
+  # - if it was up "long enough", reset backoff
+  # - if it dies instantly, increase backoff up to max
+  if [ "$uptime" -ge "$MIN_UPTIME" ]; then
+    backoff="$BACKOFF_START"
+  else
+    # increase backoff (1,2,4,8...) capped
+    backoff=$((backoff * 2))
+    [ "$backoff" -gt "$BACKOFF_MAX" ] && backoff="$BACKOFF_MAX"
+  fi
+
+  log "Reconnecting in ${backoff}s (uptime=${uptime}s)"
+  sleep "$backoff"
+done
